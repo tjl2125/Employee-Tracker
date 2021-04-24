@@ -83,7 +83,7 @@ const addDRE = () => {
             addEmp();
             break;
 
-            case 'exit':
+            case 'Exit':
             connection.end();
             break;
 
@@ -94,6 +94,76 @@ const addDRE = () => {
     });
 };
 
+const addDepartment = () => {
+    inquirer
+    .prompt ([
+        {
+            name: 'addDep',
+            message: "Please add department name",
+            type: "input"
+        }
+    ])
+    .then ((answer) => {
+        console.log('Adding new department...\n');
+        connection.query(
+          'INSERT INTO department SET ?',
+          {name: answer.addDep},
+          (err, res) => {
+            if (err) throw err;
+            console.log(`${res.affectedRows} item added!\n`);
+            runTracker();
+          }
+        )
+      })
+};
+
+const addRole = () => {
+    inquirer
+    .prompt ([
+        {
+            name: 'addR',
+            message: "Please add name of new role",
+            type: "input"
+        }
+    ])
+    .then ((answer) => {
+        console.log('Adding new role...\n');
+        connection.query(
+          'INSERT INTO role SET ?',
+          {name: answer.addR},
+          (err, res) => {
+            if (err) throw err;
+            console.log(`${res.affectedRows} item added!\n`);
+            runTracker();
+          }
+        )
+      })
+};
+
+const addEmp = () => {
+    inquirer
+    .prompt ([
+        {
+            name: 'addE',
+            message: "Please add name of employee",
+            type: "input"
+        }
+    ])
+    .then ((answer) => {
+        console.log('Adding new employee...\n');
+        connection.query(
+          'INSERT INTO employee SET ?',
+          {name: answer.addE},
+          (err, res) => {
+            if (err) throw err;
+            console.log(`${res.affectedRows} item added!\n`);
+            runTracker();
+          }
+        )
+      })
+};
+
+//second choice
 const viewDRE = () => {
     inquirer 
     .prompt ([
@@ -134,6 +204,29 @@ const viewDRE = () => {
     });
 };
 
+const viewDepartment = () => {
+    inquirer
+    .prompt ([
+        {
+            name: 'View a department',
+            message: "Please type name of department you want to see",
+            type: "input"
+        }
+    ])
+    .then((answer) => {
+        const query = 'SELECT id, name FROM department WHERE ?';
+        connection.query(query, { name: answer.name }, (err, res) => {
+          res.forEach(({ id, name }) => {
+            console.log(
+              `Id: ${id} || Name: ${name}`
+            );
+          });
+          runTracker();
+        });
+      });
+  };
+
+//third choice
 const updateEmployeeRole = () => {
     
 }
