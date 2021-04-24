@@ -1,6 +1,6 @@
 const mysql = require ('mysql');
 const inquirer = require ('inquirer'); 
-const consoleTable = require ('console.table');
+const cTable = require ('console.table');
 const pass = require ('./config');
 
 const connection = mysql.createConnection({
@@ -54,6 +54,7 @@ const connection = mysql.createConnection({
         });
     };
 
+// first choice from inital prompt
 const addDRE = () => {
     inquirer
     .prompt ([
@@ -98,70 +99,92 @@ const addDepartment = () => {
     inquirer
     .prompt ([
         {
-            name: 'addDep',
+            name: 'depName',
             message: "Please add department name",
             type: "input"
         }
     ])
     .then ((answer) => {
         console.log('Adding new department...\n');
-        connection.query(
-          'INSERT INTO department SET ?',
-          {name: answer.addDep},
-          (err, res) => {
-            if (err) throw err;
-            console.log(`${res.affectedRows} item added!\n`);
-            runTracker();
-          }
-        )
-      })
-};
+        connection.query("INSERT INTO department (name) VALUES (?)", [answer.depName], 
+        function(err, res) {
+          if (err) throw err;
+          console.log(`${depName} department has been added`)
+          console.table(res)
+          runTracker()
+  })
+  })
+}
 
 const addRole = () => {
     inquirer
     .prompt ([
         {
-            name: 'addR',
+            name: 'roleName',
             message: "Please add name of new role",
             type: "input"
+        },
+        {
+          type: "input",
+          message: "Please enter the salary for this role",
+          name: "salaryTotal"
+        },
+        {
+          type: "input",
+          message: "Please enter the department id number",
+          name: "deptID"
         }
     ])
     .then ((answer) => {
         console.log('Adding new role...\n');
         connection.query(
-          'INSERT INTO role SET ?',
-          {name: answer.addR},
-          (err, res) => {
+          "INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)", [answer.roleName, answer.salaryTotal, answer.deptID], 
+          function(err, res) {
             if (err) throw err;
-            console.log(`${res.affectedRows} item added!\n`);
+            console.log(`${title} role has been added`)
+            console.table(res);
             runTracker();
-          }
-        )
-      })
-};
+          });
+        });
+    }
 
 const addEmp = () => {
     inquirer
     .prompt ([
         {
-            name: 'addE',
-            message: "Please add name of employee",
+            name: 'empFirst',
+            message: "Please add first name of employee",
             type: "input"
-        }
+        },
+        {
+          name: 'empLast',
+          message: "Please add last name of employee",
+          type: "input"
+       },
+       {
+        name: 'roleID',
+        message: "Please add role ID number employee",
+        type: "input"
+      },
+      {
+        name: 'managerID',
+        message: "Please add manager ID number",
+        type: "input"
+      },
+
     ])
     .then ((answer) => {
         console.log('Adding new employee...\n');
-        connection.query(
-          'INSERT INTO employee SET ?',
-          {name: answer.addE},
-          (err, res) => {
-            if (err) throw err;
-            console.log(`${res.affectedRows} item added!\n`);
-            runTracker();
-          }
-        )
-      })
-};
+        connection.query("INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)",
+        [answer.empFirst, answer.empLast, answer.roleID, answer.managerID], 
+        function(err, res) {
+          if (err) throw err;
+          console.log(`${empFirst} has been added`)
+          console.table(res);
+          runTracker();
+        });
+      });
+  };
 
 //second choice
 const viewDRE = () => {
@@ -208,7 +231,7 @@ const viewDepartment = () => {
     inquirer
     .prompt ([
         {
-            name: 'View a department',
+            name: 'viewDep',
             message: "Please type name of department you want to see",
             type: "input"
         }
@@ -220,11 +243,59 @@ const viewDepartment = () => {
             console.log(
               `Id: ${id} || Name: ${name}`
             );
+            console.table(res);
           });
           runTracker();
         });
       });
   };
+
+  const viewRole = () => {
+    inquirer
+    .prompt ([
+        {
+            name: 'viewR',
+            message: "Please type name of role you want to see",
+            type: "input"
+        }
+    ])
+    .then((answer) => {
+        const query = 'SELECT id, title, salary, department_id FROM role WHERE ?';
+        connection.query(query, { title: answer.name }, (err, res) => {
+          res.forEach(({ id, title }) => {
+            console.log(
+              `Id: ${id} || Title: ${title}`
+            );
+            console.table(res);
+          });
+          runTracker();
+        });
+      });
+  };
+
+  const viewEmp = () => {
+    inquirer
+    .prompt ([
+        {
+            name: 'viewE',
+            message: "Please type name of employee you want to see",
+            type: "input"
+        }
+    ])
+    .then((answer) => {
+        const query = 'SELECT id, first_name, last_name, role_id, manager_id FROM employee WHERE ?';
+        connection.query(query, { first_name: answer.name }, (err, res) => {
+          res.forEach(({ id, first_name }) => {
+            console.log(
+              `Id: ${id} || First Name: ${first_name}`
+            );
+            console.table(res);
+          });
+          runTracker();
+        });
+      });
+  };
+
 
 //third choice
 const updateEmployeeRole = () => {
