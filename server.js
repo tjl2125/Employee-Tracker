@@ -14,6 +14,13 @@ const connection = mysql.createConnection({
     database: 'employee_db',
   });
 
+// Connect to the DB
+connection.connect((err) => {
+    if (err) throw err;
+    console.log(`connected as id ${connection.threadId}\n`);
+    runTracker();
+  });
+
   const runTracker = () => {
     inquirer 
         .prompt ([
@@ -299,14 +306,29 @@ const viewDepartment = () => {
 
 //third choice
 const updateEmployeeRole = () => {
-    
-}
+  inquirer 
+  .prompt([
+    {
+      type: "input",
+      message: "Which employee do you want to update",
+      name: "namePick"
+    },
+    {
+      type: "input",
+      message: "What information do you want to update",
+      name: "updateRole"
+    }
+  ])   
+  .then ((answer) => {
+    connection.query('UPDATE employee SET role_id=? WHERE first_name= ?',[answer.updateRole, answer.namePick],
+    function(err, res) {
+      if (err) throw err;
+      console.table(res);
+      runTracker();
+    });
+  });
+};
 
   
-  // Connect to the DB
-  connection.connect((err) => {
-    if (err) throw err;
-    console.log(`connected as id ${connection.threadId}\n`);
-    runTracker();
-  });
+
   
