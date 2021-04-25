@@ -273,7 +273,7 @@ const updateEmployeeRole = () => {
     },
     {
       type: "input",
-      message: "What information do you want to update",
+      message: "What role do you want to update",
       name: "updateRole"
     }
   ])   
