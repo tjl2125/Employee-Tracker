@@ -1,4 +1,4 @@
--- USE employees_db;
+USE employee_db;
 
 
 INSERT INTO department (name)
@@ -12,3 +12,7 @@ VALUES ("Emily", "Rodriguez", 1, 2);
 
 INSERT INTO employee (first_name, last_name, role_id)
 VALUES ("Elizabeth", "Wrixon", 2);
+
+SELECT * FROM employee;
+SELECT * FROM role;
+SELECT * FROM department;

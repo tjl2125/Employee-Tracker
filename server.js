@@ -235,73 +235,31 @@ const viewDRE = () => {
 };
 
 const viewDepartment = () => {
-    inquirer
-    .prompt ([
-        {
-            name: 'viewDep',
-            message: "Please type name of department you want to see",
-            type: "input"
-        }
-    ])
-    .then((answer) => {
-        const query = 'SELECT id, name FROM department WHERE ?';
-        connection.query(query, { name: answer.name }, (err, res) => {
-          res.forEach(({ id, name }) => {
-            console.log(
-              `Id: ${id} || Name: ${name}`
-            );
-            console.table(res);
-          });
-          runTracker();
-        });
-      });
-  };
+  let query = "SELECT * FROM department";
+  connection.query(query, function(err, res) {
+    if (err) throw err;
+    console.table(res);
+    runTracker();
+  });
+};
 
   const viewRole = () => {
-    inquirer
-    .prompt ([
-        {
-            name: 'viewR',
-            message: "Please type name of role you want to see",
-            type: "input"
-        }
-    ])
-    .then((answer) => {
-        const query = 'SELECT id, title, salary, department_id FROM role WHERE ?';
-        connection.query(query, { title: answer.name }, (err, res) => {
-          res.forEach(({ id, title }) => {
-            console.log(
-              `Id: ${id} || Title: ${title}`
-            );
-            console.table(res);
-          });
-          runTracker();
-        });
-      });
+    let query = "SELECT * FROM role";
+    connection.query(query, function(err, res) {
+      if (err) throw err;
+      console.table(res);
+      runTracker();
+    });
   };
 
   const viewEmp = () => {
-    inquirer
-    .prompt ([
-        {
-            name: 'viewE',
-            message: "Please type name of employee you want to see",
-            type: "input"
-        }
-    ])
-    .then((answer) => {
-        const query = 'SELECT id, first_name, last_name, role_id, manager_id FROM employee WHERE ?';
-        connection.query(query, { first_name: answer.name }, (err, res) => {
-          res.forEach(({ id, first_name }) => {
-            console.log(
-              `Id: ${id} || First Name: ${first_name}`
-            );
-            console.table(res);
-          });
-          runTracker();
-        });
-      });
-  };
+  let query = "SELECT * FROM employee";
+  connection.query(query, function(err, res) {
+    if (err) throw err;
+    console.table(res);
+    runTracker();
+  });
+};
 
 
 //third choice
