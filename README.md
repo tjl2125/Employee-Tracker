@@ -9,6 +9,7 @@ This applications lets the user view and manage the departments, roles, and empl
 # Preview
 
 ![Preview](./Screenshot1.png)
+![Link](https://drive.google.com/file/d/1oOUgDeVjahotxnU_A03LKLAJjEALP3AY/view)
 
 # Installation
 Clone or fork the repo. 

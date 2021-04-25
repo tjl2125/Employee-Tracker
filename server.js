@@ -116,7 +116,7 @@ const addDepartment = () => {
         connection.query("INSERT INTO department (name) VALUES (?)", [answer.depName], 
         function(err, res) {
           if (err) throw err;
-          console.log(`${depName} department has been added`)
+          console.log(`${answer.depName} department has been added`)
           console.table(res)
           runTracker()
   })
@@ -148,7 +148,7 @@ const addRole = () => {
           "INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)", [answer.roleName, answer.salaryTotal, answer.deptID], 
           function(err, res) {
             if (err) throw err;
-            console.log(`${title} role has been added`)
+            console.log(`${answer.roleName} role has been added`)
             console.table(res);
             runTracker();
           });
@@ -186,7 +186,7 @@ const addEmp = () => {
         [answer.empFirst, answer.empLast, answer.roleID, answer.managerID], 
         function(err, res) {
           if (err) throw err;
-          console.log(`${empFirst} has been added`)
+          console.log(`${answer.empFirst} has been added`)
           console.table(res);
           runTracker();
         });
